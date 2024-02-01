@@ -1,4 +1,5 @@
 import mongoose, { Schema } from "mongoose";
+import slugify from "slugify";
 
 const courseSchema = new Schema({
   name: {
@@ -18,6 +19,18 @@ const courseSchema = new Schema({
   image: {
     type: String,
   },
+  slug: {
+    type: String,
+    unique: true,
+  },
+});
+
+courseSchema.pre("validate", function (next) {
+  this.slug = slugify(this.name, {
+    lower: true,
+    strict: true,
+  });
+  next();
 });
 
 const Course = mongoose.model("Course", courseSchema);
