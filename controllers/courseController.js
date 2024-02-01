@@ -14,3 +14,18 @@ export const createCourse = async (req, res) => {
     });
   }
 };
+
+export const getAllCourses = async (req, res) => {
+  try {
+    const courses = await Course.find({});
+    res.status(200).render("courses", {
+      page_name: "courses",
+      courses,
+    });
+  } catch (error) {
+    res.status(400).json({
+      status: "fail",
+      error,
+    });
+  }
+};
