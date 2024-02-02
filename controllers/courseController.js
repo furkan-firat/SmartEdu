@@ -17,16 +17,17 @@ export const createCourse = async (req, res) => {
 };
 
 export const getAllCourses = async (req, res) => {
-  const categorySlug = req.query.category;
-
-  const category = await Category.findOne({ slug: categorySlug });
-
-  let filter = {};
-
-  if (categorySlug) {
-    filter = { category: category._id };
-  }
   try {
+    const categorySlug = req.query.category;
+
+    const category = await Category.findOne({ slug: categorySlug });
+
+    let filter = {};
+
+    if (categorySlug) {
+      filter = { category: category._id };
+    }
+
     const courses = await Course.find(filter).sort({ _id: -1 });
     const categories = await Category.find({});
     res.status(200).render("courses", {

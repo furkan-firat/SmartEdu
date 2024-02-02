@@ -6,6 +6,7 @@ import bodyParser from "body-parser";
 import pageRoute from "./routes/pageRoute.js";
 import courseRoute from "./routes/courseRoute.js";
 import categoryRoute from "./routes/categoryRoute.js";
+import usersRoute from "./routes/usersRoute.js";
 
 const app = express();
 
@@ -26,6 +27,7 @@ app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x
 app.use("/", pageRoute);
 app.use("/courses", courseRoute);
 app.use("/categories", categoryRoute);
+app.use("/users", usersRoute);
 
 const port = 3000;
 app.listen(port, () => {
