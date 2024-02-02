@@ -1,4 +1,5 @@
 import Course from "../models/Course.js";
+import Category from "../models/Category.js";
 
 export const createCourse = async (req, res) => {
   try {
@@ -16,11 +17,22 @@ export const createCourse = async (req, res) => {
 };
 
 export const getAllCourses = async (req, res) => {
+  const categorySlug = req.query.category;
+
+  const category = await Category.findOne({ slug: categorySlug });
+
+  let filter = {};
+
+  if (categorySlug) {
+    filter = { category: category._id };
+  }
   try {
-    const courses = await Course.find({});
+    const courses = await Course.find(filter).sort({ _id: -1 });
+    const categories = await Category.find({});
     res.status(200).render("courses", {
       page_name: "courses",
       courses,
+      categories,
     });
   } catch (error) {
     res.status(400).json({
