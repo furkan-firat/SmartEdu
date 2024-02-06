@@ -41,7 +41,7 @@ export const loginUser = async (req, res) => {
   }
 };
 
-export const logoutUser = async (req, res) => {
+export const logoutUser = (req, res) => {
   req.session.destroy((err) => {
     if (err) {
       console.error(err);
@@ -49,5 +49,13 @@ export const logoutUser = async (req, res) => {
     } else {
       res.redirect("/login");
     }
+  });
+};
+
+export const getDashboardPage = async (req, res) => {
+  const user = await User.findOne({ _id: req.session.userID });
+  res.status(200).render("dashboard", {
+    page_name: "dashboard",
+    user,
   });
 };
