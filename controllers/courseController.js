@@ -45,10 +45,12 @@ export const getAllCourses = async (req, res) => {
 
 export const getCourse = async (req, res) => {
   try {
+    const categories = await Category.find({});
     const course = await Course.findOne({ slug: req.params.slug });
     res.status(200).render("course", {
       page_name: "courses",
       course,
+      categories,
     });
   } catch (error) {
     res.status(400).json({
