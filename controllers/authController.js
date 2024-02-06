@@ -21,18 +21,17 @@ export const loginUser = async (req, res) => {
 
   try {
     const user = await User.findOne({ email });
-
     if (!user) {
       return res.status(400).send("Invalid email or password");
     }
 
     const validPassword = await bcrypt.compare(password, user.password);
-
     if (!validPassword) {
       return res.status(400).send("Invalid email or password");
     }
 
-    res.send("Login successful");
+    req.session.userID = user._id;
+    res.redirect("/");
   } catch (error) {
     console.log(error);
     res.status(400).json({
@@ -40,4 +39,15 @@ export const loginUser = async (req, res) => {
       error,
     });
   }
+};
+
+export const logoutUser = async (req, res) => {
+  req.session.destroy((err) => {
+    if (err) {
+      console.error(err);
+      res.status(500).send("Internal Server Error");
+    } else {
+      res.redirect("/login");
+    }
+  });
 };
