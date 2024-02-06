@@ -3,6 +3,7 @@ import ejs from "ejs";
 import mongoose from "mongoose";
 import bodyParser from "body-parser";
 import session from "express-session";
+import MongoStore from "connect-mongo";
 
 import pageRoute from "./routes/pageRoute.js";
 import courseRoute from "./routes/courseRoute.js";
@@ -31,6 +32,9 @@ app.use(
     secret: "my-session-key",
     resave: false,
     saveUninitialized: true,
+    store: MongoStore.create({
+      mongoUrl: "mongodb://127.0.0.1:27017/smartedu-db",
+    }),
   })
 );
 
