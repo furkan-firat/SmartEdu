@@ -1,4 +1,4 @@
-export const isLoggedIn = (req, res, next) => {
+export const authMiddleware = (req, res, next) => {
   if (!req.session.userID) {
     return res.redirect("/login");
   }

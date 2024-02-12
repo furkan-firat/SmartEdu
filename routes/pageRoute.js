@@ -5,8 +5,7 @@ import {
   getLoginPage,
   getRegisterPage,
 } from "../controllers/pageController.js";
-import { isLoggedOut } from "../middlewares/isLoggedOut.js";
-import { isLoggedIn } from "../middlewares/isLoggedIn.js";
+import { redirectHome } from "../middlewares/redirectHome.js";
 
 const router = express.Router();
 
@@ -14,8 +13,8 @@ router.route("/").get(getIndexPage);
 
 router.route("/about").get(getAboutPage);
 
-router.route("/register").get(isLoggedIn, getRegisterPage);
+router.route("/register").get(redirectHome, getRegisterPage);
 
-router.route("/login").get(isLoggedIn, getLoginPage);
+router.route("/login").get(redirectHome, getLoginPage);
 
 export default router;
