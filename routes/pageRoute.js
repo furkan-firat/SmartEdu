@@ -1,6 +1,7 @@
 import express from "express";
 import {
   getAboutPage,
+  getContactPage,
   getIndexPage,
   getLoginPage,
   getRegisterPage,
@@ -16,5 +17,7 @@ router.route("/about").get(getAboutPage);
 router.route("/register").get(redirectHome, getRegisterPage);
 
 router.route("/login").get(redirectHome, getLoginPage);
+
+router.route("/contact").get(getContactPage);
 
 export default router;
