@@ -24,6 +24,12 @@ const userSchema = new Schema({
     type: Date,
     default: Date.now,
   },
+  courses: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Course",
+    },
+  ],
 });
 
 userSchema.pre("save", function (next) {
