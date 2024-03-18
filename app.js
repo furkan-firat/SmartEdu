@@ -9,13 +9,20 @@ import pageRoute from "./routes/pageRoute.js";
 import courseRoute from "./routes/courseRoute.js";
 import categoryRoute from "./routes/categoryRoute.js";
 import usersRoute from "./routes/usersRoute.js";
+import dotenv from "dotenv";
+dotenv.config();
 
 const app = express();
 
 // CONNECT DB
-mongoose.connect("mongodb://127.0.0.1:27017/smartedu-db").then(() => {
-  console.log("DB CONNECTED SUCCESFULLY");
-});
+mongoose
+  .connect(process.env.MONGODB_CONNECT_URL, {})
+  .then(() => {
+    console.log("DB CONNECTED");
+  })
+  .catch((err) => {
+    console.log(err);
+  });
 
 // TEMPLATE ENGINE
 app.set("view engine", "ejs");
@@ -33,7 +40,7 @@ app.use(
     resave: false,
     saveUninitialized: true,
     store: MongoStore.create({
-      mongoUrl: "mongodb://127.0.0.1:27017/smartedu-db",
+      mongoUrl: MONGODB_CONNECT_URL,
     }),
   })
 );
@@ -53,7 +60,7 @@ app.use("/courses", courseRoute);
 app.use("/categories", categoryRoute);
 app.use("/users", usersRoute);
 
-const port = 3000;
+const port = process.env.PORT || 5000;
 app.listen(port, () => {
   console.log(`Server running at port ${port}...`);
 });
