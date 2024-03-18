@@ -4,7 +4,7 @@ import mongoose from "mongoose";
 import bodyParser from "body-parser";
 import session from "express-session";
 import MongoStore from "connect-mongo";
-
+import methodOverride from "method-override";
 import pageRoute from "./routes/pageRoute.js";
 import courseRoute from "./routes/courseRoute.js";
 import categoryRoute from "./routes/categoryRoute.js";
@@ -35,6 +35,11 @@ app.use(
     store: MongoStore.create({
       mongoUrl: "mongodb://127.0.0.1:27017/smartedu-db",
     }),
+  })
+);
+app.use(
+  methodOverride("_method", {
+    methods: ["POST", "GET"],
   })
 );
 

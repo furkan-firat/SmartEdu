@@ -64,11 +64,12 @@ export const getAllCourses = async (req, res) => {
 
 export const getCourse = async (req, res) => {
   try {
-    const categories = await Category.find({});
-    const course = await Course.findOne({ slug: req.params.slug }).populate(
-      "user"
-    );
+    const categories = await Category.find();
     const user = await User.findById(req.session.userID);
+    const course = await Course.findOne({ slug: req.params.slug }).populate([
+      "user",
+      "category",
+    ]);
 
     res.status(200).render("course", {
       page_name: "courses",
@@ -104,6 +105,37 @@ export const releaseCourse = async (req, res) => {
     const user = await User.findById(req.session.userID);
     await user.courses.pull({ _id: req.body.course_id });
     await user.save();
+
+    res.status(200).redirect("/users/dashboard");
+  } catch (error) {
+    res.status(400).json({
+      status: "fail",
+      error,
+    });
+  }
+};
+
+export const deleteCourse = async (req, res) => {
+  try {
+    await Course.findOneAndDelete({ slug: req.params.slug });
+
+    res.status(200).redirect("/users/dashboard");
+  } catch (error) {
+    res.status(400).json({
+      status: "fail",
+      error,
+    });
+  }
+};
+
+export const updateCourse = async (req, res) => {
+  try {
+    const course = await Course.findOne({ slug: req.params.slug });
+    course.name = req.body.name;
+    course.description = req.body.description;
+    course.category = req.body.category;
+
+    course.save();
 
     res.status(200).redirect("/users/dashboard");
   } catch (error) {
